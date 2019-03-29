@@ -6,41 +6,41 @@ const int RIGHT_ANGLE = 8;
 const int FOWARD_ANGLE = 96;
 
 // Left motor pins
-int motorPinLB=14;
-int motorPinLF=15;
+#define MotorLeftBackPin     14
+#define MotorLeftFrontPin    15
 
 // Right motor pins
-int motorPinRB=16;
-int motorPinRF=17;
+#define MotorRightBackPin    16
+#define MotorRightFrontPin   17
 
 //Ultrasonic sensor pins
-int ultrasonicOutputPin = 8;
-int ultrasonicInputPin = 9;
-int ultrasonicMotorPin = 11;
+#define UltrasonicOutputPin  8
+#define UltrasonicInputPin   9
+#define UltrasonicMotorPin   11
 
 Servo ultrasonicServo;
 
 void setup() {
   Serial.begin(9600);
 
-  pinMode(motorPinLB, OUTPUT);
-  pinMode(motorPinLF,OUTPUT);
+  pinMode(MotorLeftBackPin, OUTPUT);
+  pinMode(MotorLeftFrontPin, OUTPUT);
 
-  pinMode(motorPinRB,OUTPUT);
-  pinMode(motorPinRF,OUTPUT);
+  pinMode(MotorRightBackPin, OUTPUT);
+  pinMode(MotorRightFrontPin, OUTPUT);
 
-  pinMode(ultrasonicInputPin, INPUT);
-  pinMode(ultrasonicOutputPin, OUTPUT);
+  pinMode(UltrasonicInputPin, INPUT);
+  pinMode(UltrasonicOutputPin, OUTPUT);
 
-  ultrasonicServo.attach(ultrasonicMotorPin);
+  ultrasonicServo.attach(UltrasonicMotorPin);
 }
 
-#pragma region Motor Controls
-void setMotor(int rb, int rf, int lb, int lf, int d, int delayScale = 50) {
-  digitalWrite(motorPinRB, rb);
-  digitalWrite(motorPinRF, rf);
-  digitalWrite(motorPinLB, lb);
-  digitalWrite(motorPinLF, lf);
+#pragma region MotorLeftBackPin     Cotrols
+void setMotor(int rb, int r, int lb, int lf, int d, int delayScale = 50) {
+  digitalWrite(MotorRightBackPin, rb);
+  digitalWrite(MotorRightFrontPin, rf);
+  digitalWrite(MotorLeftBackPin, lb);
+  digitalWrite(MotorLeftFrontPin, lf);
 
   delay(d * delayScale);
 }
@@ -71,13 +71,13 @@ float getDistance(int direction, int delayAfterServoMovement = DELAY_AFTER_SEVRV
   ultrasonicServo.write(direction);
   delay(delayAfterServoMovement);
 
-  digitalWrite(ultrasonicOutputPin, LOW);   // For low voltage 2 μs ultrasonic launch
+  digitalWrite(UltrasonicOutputPin, LOW);   // For low voltage 2 μs ultrasonic launch
   delayMicroseconds(2);
-  digitalWrite(ultrasonicOutputPin, HIGH);  // Let ultrasonic launch 10 μs high voltage, there is at least 10 μs
+  digitalWrite(UltrasonicOutputPin, HIGH);  // Let ultrasonic launch 10 μs high voltage, there is at least 10 μs
   delayMicroseconds(10);
-  digitalWrite(ultrasonicOutputPin, LOW);    // Maintaining low voltage ultrasonic launch
+  digitalWrite(UltrasonicOutputPin, LOW);    // Maintaining low voltage ultrasonic launch
 
-  float rawValue = pulseIn(ultrasonicInputPin, HIGH);  // Read the time difference
+  float rawValue = pulseIn(UltrasonicInputPin, HIGH);  // Read the time difference
 
   return rawValue / 5.8 / 10; // Will be time to distance measurement (calc taken from factory code. Not verified) (unit: cm)
 }
