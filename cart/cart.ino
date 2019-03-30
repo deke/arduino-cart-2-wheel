@@ -8,10 +8,12 @@ const int FOWARD_ANGLE = 96;
 // Left motor pins
 #define MotorLeftBackPin     14
 #define MotorLeftFrontPin    15
+#define MotorLeftSpeedPin    5  //ENA
 
 // Right motor pins
 #define MotorRightBackPin    16
 #define MotorRightFrontPin   17
+#define MotorRightSpeedPin   6  //ENB
 
 //Ultrasonic sensor pins
 #define UltrasonicOutputPin  8
@@ -25,9 +27,11 @@ void setup() {
 
   pinMode(MotorLeftBackPin, OUTPUT);
   pinMode(MotorLeftFrontPin, OUTPUT);
+  pinMode(MotorLeftSpeedPin, OUTPUT);
 
   pinMode(MotorRightBackPin, OUTPUT);
   pinMode(MotorRightFrontPin, OUTPUT);
+  pinMode(MotorRightSpeedPin, OUTPUT);
 
   pinMode(UltrasonicInputPin, INPUT);
   pinMode(UltrasonicOutputPin, OUTPUT);
@@ -36,33 +40,36 @@ void setup() {
 }
 
 #pragma region MotorLeftBackPin     Cotrols
-void setMotor(int rb, int r, int lb, int lf, int d, int delayScale = 50) {
+void setMotor(int rb, int rf, int lb, int lf, int rSpeed, int lSpeed, int d, int delayScale = 50) {
   digitalWrite(MotorRightBackPin, rb);
   digitalWrite(MotorRightFrontPin, rf);
+  analogWrite(MotorRightSpeedPin, rSpeed);
+
   digitalWrite(MotorLeftBackPin, lb);
   digitalWrite(MotorLeftFrontPin, lf);
+  analogWrite(MotorLeftSpeedPin, lSpeed);
 
   delay(d * delayScale);
 }
 
 void turnRight(int d) {
-  setMotor(HIGH, LOW, LOW, HIGH, d);
+  setMotor(HIGH, LOW, LOW, HIGH, 120, 120, d);
 }
 
 void turnLeft(int d) {
-  setMotor(LOW, HIGH, HIGH, LOW, d);
+  setMotor(LOW, HIGH, HIGH, LOW, 120, 120, d);
 }
 
 void forward(int d) {
-  setMotor(HIGH, LOW, HIGH, LOW, d);
+  setMotor(HIGH, LOW, HIGH, LOW, 120, 120, d);
 }
 
 void stop(int d) {
-  setMotor(LOW, LOW, LOW, LOW, d);
+  setMotor(LOW, LOW, LOW, LOW, 0, 0, d);
 }
 
 void back(int d) {
-  setMotor(LOW, HIGH, LOW, HIGH, d);
+  setMotor(LOW, HIGH, LOW, HIGH, 120, 120, d);
 }
 #pragma endregion
 
