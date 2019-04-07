@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include <NewPing.h>
 
 const int DELAY_AFTER_SEVRVO_MOVEMENT = 250; // After the servo motor to the stability of the time
 const int LEFT_ANGLE = 180;
@@ -20,6 +21,7 @@ const int FOWARD_ANGLE = 96;
 #define UltrasonicInputPin   9
 #define UltrasonicMotorPin   11
 
+NewPing sonar(UltrasonicOutputPin, UltrasonicInputPin);
 Servo ultrasonicServo;
 
 void setup() {
@@ -78,15 +80,7 @@ float getDistance(int direction, int delayAfterServoMovement = DELAY_AFTER_SEVRV
   ultrasonicServo.write(direction);
   delay(delayAfterServoMovement);
 
-  digitalWrite(UltrasonicOutputPin, LOW);   // For low voltage 2 μs ultrasonic launch
-  delayMicroseconds(2);
-  digitalWrite(UltrasonicOutputPin, HIGH);  // Let ultrasonic launch 10 μs high voltage, there is at least 10 μs
-  delayMicroseconds(10);
-  digitalWrite(UltrasonicOutputPin, LOW);    // Maintaining low voltage ultrasonic launch
-
-  float rawValue = pulseIn(UltrasonicInputPin, HIGH);  // Read the time difference
-
-  return rawValue / 5.8 / 10; // Will be time to distance measurement (calc taken from factory code. Not verified) (unit: cm)
+  return sonar.ping_cm();
 }
 
 float getDistanceLeft() {
