@@ -25,7 +25,7 @@ NewPing sonar(UltrasonicOutputPin, UltrasonicInputPin);
 Servo ultrasonicServo;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(MotorLeftBackPin, OUTPUT);
   pinMode(MotorLeftFrontPin, OUTPUT);
