@@ -24,6 +24,8 @@ const int FOWARD_ANGLE = 96;
 NewPing sonar(UltrasonicOutputPin, UltrasonicInputPin);
 Servo ultrasonicServo;
 
+int zeroCount = 0;
+
 void setup() {
   Serial.begin(115200);
 
@@ -128,10 +130,18 @@ void goForward() {
 void loop() {
   float forwardDistance = getDistanceForward();
 
-  if(forwardDistance < 10) {
+  if(forwardDistance == 0) {
+    zeroCount++;
+  }
+
+  Serial.print("zeroCount: ");
+  Serial.println(zeroCount);
+  if ((forwardDistance > 0 || zeroCount >= 3) && forwardDistance < 10)
+  {
+    zeroCount = 0;
     goBackwards();
   }
-  else if (forwardDistance < 25)
+  else if (forwardDistance > 0 && forwardDistance < 25)
   {
     stop(1);
     float leftDistance = getDistanceLeft();
