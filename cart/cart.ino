@@ -42,7 +42,7 @@ void setup() {
 }
 
 #pragma region MotorLeftBackPin     Cotrols
-void setMotor(int rb, int rf, int lb, int lf, int rSpeed, int lSpeed, int d, int delayScale = 50) {
+void setMotor(int rb, int rf, int lb, int lf, int rSpeed, int lSpeed, int d, int delayScale = 15) {
   digitalWrite(MotorRightBackPin, rb);
   digitalWrite(MotorRightFrontPin, rf);
   analogWrite(MotorRightSpeedPin, rSpeed);
